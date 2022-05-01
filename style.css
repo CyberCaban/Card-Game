@@ -1,0 +1,47 @@
+body{
+    margin: 0;
+}
+
+.dragArea{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.circle{
+    width: 100px;
+    height: 100px;
+    background-color: black;
+    border-radius: 50%;
+    margin: auto;
+    position: absolute;
+}
+
+.item_1,
+.item_2,
+.item_3,
+.item_4{
+    width: 150px;
+    height: 150px;
+    border: 1px black solid;
+}
+
+.item_2,
+.item_4{
+    margin: 0 0 0 auto;
+}
+
+.up,
+.down{
+    display: flex;
+    flex-direction: row;
+}
+
+.up{
+    margin: 0 0 auto 0;
+}
+
+.down{
+    margin: auto 0 0 0;
+}
