@@ -9,13 +9,23 @@ body{
     position: relative;
 }
 
-.circle{
-    width: 100px;
-    height: 100px;
-    background-color: black;
-    border-radius: 50%;
-    margin: auto;
+.card{
+    width: 110px;
+    height: 150px;
+    background-color: #1D7373	;
     position: absolute;
+    border: 2px solid gold;
+}
+
+.cards{
+    display: flex;
+    flex-direction: row;
+}
+
+.cardholder{
+    width: 110px;
+    height: 150px;
+    margin: 20px;
 }
 
 .item_1,
