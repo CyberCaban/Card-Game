@@ -19,22 +19,13 @@ class ColCard {
     }
     
     createCard(){
-        cards.insertAdjacentHTML('beforeend', `<div class="cardholder${this.cardname}">
-            <div class="card${this.cardname}">
+        cards.insertAdjacentHTML('beforeend', `<div class="cardholder cardholder${this.cardname}">
+            <div class="card card${this.cardname}">
                 <h1>${this.cardname}</h1>
             </div>
         </div>`)
         this.card = document.querySelector(`.card${this.cardname}`)
-        this.card.style.position = "absolute"
-        this.card.style.width = "110px"
-        this.card.style.height = "150px"
-        this.card.style.backgroundColor = "#1D7373"
-        this.card.style.border = "2px solid #A60000"
-        
-        this.cardholder = document.querySelector(`.cardholder${this.cardname}`)
-        this.cardholder.style.width = "110px"
-        this.cardholder.style.height = "150px"
-        this.cardholder.style.margin = "20px"
+        this.card.style.backgroundImage = "url(/img/card.png)"
     }
 
     collision(){
@@ -74,24 +65,35 @@ class ColCard {
         
         this.card.addEventListener("mousemove", e=>{
             if (this.isDragging === true) {
-                this.x = e.clientX - 50 + 'px'
-                this.y = e.clientY - 50 + 'px'
+                this.x = e.clientX - 55 + 'px'
+                this.y = e.clientY - 75 + 'px'
                 this.card.style.left = this.x
                 this.card.style.top = this.y
                 // console.log(x,y,isDragging);
                 info.innerHTML = `<h1>card in ${this.x},${this.y}, in ${data}</h1>`
-                this.collision()
-                // console.log(item_4.getBoundingClientRect(), card.getBoundingClientRect());
             }
         })
         
         this.card.addEventListener("mouseup", e=>{
             if (this.isDragging === true) {
+                this.collision()
                 this.isDragging = false
             }
         })
     }
     
+}
+
+class FatCard extends ColCard{
+    createCard(){
+        cards.insertAdjacentHTML('beforeend', `<div class="cardholder cardholder${this.cardname}">
+            <div class="card card${this.cardname}">
+                <h1>${this.cardname}</h1>
+            </div>
+        </div>`)
+        this.card = document.querySelector(`.card${this.cardname}`)
+        this.card.style.backgroundImage = "url(/img/fatcard.png)"
+    }
 }
 
 let Mycard = new ColCard("pa")
@@ -101,3 +103,7 @@ Mycard.cardMove()
 let macard = new ColCard('ma')
 macard.createCard()
 macard.cardMove()
+
+let fatCard = new FatCard('sdsd')
+fatCard.createCard()
+fatCard.cardMove()
