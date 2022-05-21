@@ -1,6 +1,3 @@
-# CardGame
-You can create gaming cards and drag them around\
-Made only with JavaScript\
-\
-You can't create two cards with the same names\
-and use space while naming your card
+# JS-Collision
+Tells when black circle is touching a square
+You can move black circle with your mouse and title will say where it is. If it touching numbered squares it will write nubmer of square circle in

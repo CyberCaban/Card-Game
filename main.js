@@ -24,7 +24,13 @@ for (let i = 0; i < cardTypo.length; i++) {
 createCardBtn.addEventListener('click', ()=>{
     if (archive.find(card => card.cardTitle === `${cardNameInput.value}`)) {
         alert('You cant create cards with the same names')
-    }else{
+        cardNameInput.value = ""
+    }
+    if (`${cardNameInput.value}`.includes(' ')) {
+        alert('You cant use space while naming your card')
+        cardNameInput.value = ""
+    }
+    else{
         switch (cardTypeOp.value) {
             case "Magician":
                 let cardIndexMg = new ColCard(`${cardNameInput.value}`)
