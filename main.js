@@ -25,10 +25,12 @@ createCardBtn.addEventListener('click', ()=>{
     if (archive.find(card => card.cardTitle === `${cardNameInput.value}`)) {
         alert('You cant create cards with the same names')
         cardNameInput.value = ""
+        return
     }
     if (`${cardNameInput.value}`.includes(' ')) {
         alert('You cant use space while naming your card')
         cardNameInput.value = ""
+        return
     }
     else{
         switch (cardTypeOp.value) {
@@ -51,9 +53,6 @@ createCardBtn.addEventListener('click', ()=>{
                     type:"Hermit",
                     cardTitle: `${cardNameInput.value}`,
                 })
-                break;
-                    
-            default:
                 break;
         }
         deleteCardType.insertAdjacentHTML('beforeend',
