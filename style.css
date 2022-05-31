@@ -21,6 +21,12 @@ body{
     text-align: center;
 }
 
+.card h1{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
 .cards{
     display: flex;
     flex-direction: row;
