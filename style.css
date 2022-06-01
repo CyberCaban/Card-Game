@@ -10,15 +10,23 @@ body{
 }
 
 .card{
-    width: 110px;
-    height: 200px;
+    width: 121px;
+    height: 220px;
     background-color: #1D7373	;
     position: absolute;
-    border: 2px solid gold;
+    border: 2px solid rgb(226, 0, 0);
     background-size: cover;
     border-radius: 10px;
     color: aliceblue;
     text-align: center;
+}
+
+.Mg{
+    background-image: url(/img/00.png);
+}
+
+.Hm{
+    background-image: url(/img/01.png);
 }
 
 .card h1{
