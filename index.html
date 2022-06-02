@@ -10,17 +10,22 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel" defer src="/reactJS.js"></script>
-    <title>Document</title>
+    <title>CardGame</title>
 </head>
 <body>
     <div class="dragArea">
         <div class="up">
             <div class="item_1">1</div>
-            <div class="info"></div>
+            <div class="info">
+                <ul><strong>Rules</strong>
+                    <li>You cant use space while naming your card</li>
+                    <li>You cant create cards with the same names</li>
+                </ul>
+            </div>
             <div class="item_2">2</div>
         </div>
         <!-- <div class="card"></div> -->
-        <div class="down">
+        <div id="down">
             <!-- <div class="item_3">3</div> -->
             <div id="cards">
                 <div class="createCardBox">

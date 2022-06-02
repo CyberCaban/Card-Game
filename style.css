@@ -29,7 +29,8 @@ body{
     background-image: url(/img/01.png);
 }
 
-.card h1{
+.card h2,
+.info{
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -63,6 +64,13 @@ body{
     margin-top: auto;
 }
 
+.cardContainer{
+    width: 1px;
+    height: 1px;
+    display: flex;
+    flex-direction: row;
+}
+
 .item_1,
 .item_2,
 .item_3,
@@ -78,7 +86,7 @@ body{
 }
 
 .up,
-.down{
+#down{
     display: flex;
     flex-direction: row;
 }
@@ -87,6 +95,6 @@ body{
     margin: 0 0 auto 0;
 }
 
-.down{
+#down{
     margin: auto 0 0 0;
 }
