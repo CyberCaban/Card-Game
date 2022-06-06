@@ -2,31 +2,40 @@ body{
     margin: 0;
 }
 
-.dragArea{
+#root{
     height: 100vh;
+    position: relative;
+    display: flex;
+}
+
+#dragArea{
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
 }
 
 .card{
-    width: 121px;
-    height: 220px;
+    width: 133px;
+    height: 242px;
     background-color: #1D7373	;
     position: absolute;
     border: 2px solid rgb(226, 0, 0);
     background-size: cover;
     border-radius: 10px;
-    color: aliceblue;
+    color: rgb(0, 255, 0);
     text-align: center;
 }
 
 .Mg{
     background-image: url(/img/00.png);
+    opacity: 90%;
 }
 
 .Hm{
     background-image: url(/img/01.png);
+    opacity: 90%;
 }
 
 .card h2,
@@ -85,13 +94,13 @@ body{
     margin: 0 0 0 auto;
 }
 
-.up,
+#up,
 #down{
     display: flex;
     flex-direction: row;
 }
 
-.up{
+#up{
     margin: 0 0 auto 0;
 }
 

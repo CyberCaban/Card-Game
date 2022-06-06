@@ -1,3 +1,36 @@
+class CollisionElements extends React.Component{
+    constructor(props){
+        super(props)
+    }
+
+    collision(e){
+        console.log(e.target.getBoundingClientRect());
+        console.log(ColCard.props.sayHello());
+    }
+
+    carrd(){
+        
+    }
+
+    render(){
+        return <div id="dragArea">
+            <div id="up">
+                <div className="item_1">1</div>
+                <div className="info">
+                    <ul><strong>Rules</strong>
+                        <li>You cant use space while naming your card</li>
+                        <li>You cant create cards with the same names</li>
+                    </ul>
+                </div>
+                <div className="item_2" onClick={(e)=>this.collision(e)}>2</div>
+            </div>
+            <div id="down">
+                <CreateCardBtn />
+            </div>
+        </div>
+    }
+}
+
 class CreateCardBtn extends React.Component{
     constructor(props){
         super(props)
@@ -30,7 +63,6 @@ class CreateCardBtn extends React.Component{
             })
             this.setState({archive: arr})
             this.createCard
-            // console.log(this.state.archive);
         }else{
             return alert('Check the rules!')
         }
@@ -42,11 +74,9 @@ class CreateCardBtn extends React.Component{
         this.setState({
             archive:arr
         })
-        // console.log(this.state.archive);
     }
 
     handleDeleteChange(event){
-        // console.log(1);
         this.setState({
             deleteValue: event.target.value
         })
@@ -64,8 +94,11 @@ class CreateCardBtn extends React.Component{
         })
     }
 
+    sayHello(){
+        console.log('hello');
+    }
+
     render(){
-        // console.log(this.state);
         const typeMap = this.state.cardTypes.map((type)=>{
             return <option value={type} key={type}>{type}</option>
         })
@@ -80,10 +113,8 @@ class CreateCardBtn extends React.Component{
                 return <FatCard name={card.cardTitle} key={card.cardTitle}/>
             }
         })
-        // console.log(creation);
         const titleInput = this.state.value
         const typeInput = this.state.typeValue
-        // console.log(typeMap);
         return <div id="cards">
             <div className="cardContainer">
                 {creation}
@@ -103,7 +134,6 @@ class CreateCardBtn extends React.Component{
 
 class ColCard extends React.Component{
     constructor(props){
-        console.log(1);
         super(props)
         this.x
         this.y
@@ -116,6 +146,7 @@ class ColCard extends React.Component{
     onDragStart = (event) => {
         if (event.type === "mousedown") {
             this.setState({isDragging: true})
+            console.log(event.target);
         }
     }
 
@@ -123,12 +154,10 @@ class ColCard extends React.Component{
         if (this.state.isDragging === true) {
             this.setState({
                 initialPos:{
-                    left: event.clientX - 55,
-                    top: event.clientY - 75
+                    left: event.clientX - 66,
+                    top: event.clientY - 121
                 }
             })  
-            // console.log(this.state.isDragging);
-            // console.log(event.clientY);
         }
     }
 
@@ -137,21 +166,19 @@ class ColCard extends React.Component{
             if (this.state.isDragging === true) {
                 this.setState({isDragging: false})
             }
-            // console.log(this.state.isDragging);
         }
     }
 
-    createCard(){
-        // console.log(this.props.name);
+    sayHello = () => {
+        console.log('hello');
+    }
+
+    render(){
         return <div className={`cardholder cardholder-${this.props.name}`}>
             <div style={this.state.initialPos} className={`card Mg card-${this.props.name}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop}>
                 <h2 unselectable="on">{this.props.name}</h2>
             </div>
         </div>
-    }
-
-    render(){
-        return this.createCard()
     }
 }
 
@@ -166,5 +193,6 @@ class FatCard extends ColCard{
 }
 
 
-const root = ReactDOM.createRoot(document.getElementById('down'));
-root.render(<CreateCardBtn />);
+// const root = ReactDOM.createRoot(document.getElementById('down'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<CollisionElements />);
