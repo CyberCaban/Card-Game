@@ -1,15 +1,28 @@
 class CollisionElements extends React.Component{
     constructor(props){
         super(props)
+        this.state = {
+            isDraggingCard:false
+        }
     }
 
     collision(e){
-        console.log(e.target.getBoundingClientRect());
-        console.log(ColCard.props.sayHello());
+        console.log(e.target.parentElement.parentElement.children[1].children[0].children[0].children); //массив кардхолдеров
+        // console.log(e.target.parentElement.parentElement.children[1].children[0].children[0].children[0].children[0].getBoundingClientRect()); //обращение к конкретной карточке
+                    // e.target.parentElement.parentElement.children[1].children[0].children[0].children.map(cardholder=>{
+                    //     console.log(cardholder);
+                    // })
+        for (let i = 0; i < e.target.parentElement.parentElement.children[1].children[0].children[0].children.length; i++) {
+            console.log(e.target.parentElement.parentElement.children[1].children[0].children[0].children[i]);
+        }
+        // if (isDraggingCard === true) {
+            
+        // }
+        // React.Children.map(children=>{console.log(children);})
     }
-
-    carrd(){
-        
+    
+    updateData = (value) => {
+        this.setState({isDraggingCard: value})
     }
 
     render(){
@@ -25,7 +38,7 @@ class CollisionElements extends React.Component{
                 <div className="item_2" onClick={(e)=>this.collision(e)}>2</div>
             </div>
             <div id="down">
-                <CreateCardBtn />
+                <CreateCardBtn updateData={this.updateData}/>
             </div>
         </div>
     }
@@ -107,10 +120,10 @@ class CreateCardBtn extends React.Component{
         })
         const creation = this.state.archive.map(card=>{
             if (card.cardType === "Magician") {
-                return <ColCard name={card.cardTitle} key={card.cardTitle}/>
+                return <ColCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData}/>
             }
             if (card.cardType === "Hermit") {
-                return <FatCard name={card.cardTitle} key={card.cardTitle}/>
+                return <FatCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData}/>
             }
         })
         const titleInput = this.state.value
@@ -157,7 +170,8 @@ class ColCard extends React.Component{
                     left: event.clientX - 66,
                     top: event.clientY - 121
                 }
-            })  
+            })
+            this.props.updateData(this.state.isDragging)
         }
     }
 
@@ -183,7 +197,7 @@ class ColCard extends React.Component{
 }
 
 class FatCard extends ColCard{
-    createCard(){
+    render(){
         return <div className={`cardholder cardholder-${this.props.name}`}>
             <div style={this.state.initialPos} className={`card Hm card-${this.props.name}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop}>
                 <h2 unselectable="on">{this.props.name}</h2>
@@ -192,7 +206,5 @@ class FatCard extends ColCard{
     }
 }
 
-
-// const root = ReactDOM.createRoot(document.getElementById('down'));
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<CollisionElements />);
