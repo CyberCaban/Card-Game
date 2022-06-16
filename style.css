@@ -105,5 +105,30 @@ body{
 }
 
 #down{
+    flex-direction: column;
     margin: auto 0 0 0;
+}
+
+#CardPlaces{
+    width: 66.67%;
+    height: 250px;
+    margin: auto;
+    border: 1px black solid;
+    display: flex;
+    flex-direction: row;
+}
+
+.place{
+    width: 133px;
+    height: 242px;
+    border: 1px black solid;
+    margin: auto;
+}
+
+.place p{
+    margin-top: -20px;
+}
+
+.chooseWindow{
+    background-color: brown;
 }
