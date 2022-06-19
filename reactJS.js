@@ -30,11 +30,9 @@ class CollisionElements extends React.Component{
 
     render(){
         const Places = <div id="CardPlaces">
-            <div ref={this.place1Ref}
-            // onClick={(e)=>this.placeLocUpd(e)} 
-            className="place num1"><p>1</p></div>
-            <div ref={this.place2Ref} className="place num2"><p>2</p></div>
-            <div ref={this.place3Ref} className="place num3"><p>3</p></div>
+            <div ref={this.place1Ref} className="place num1"><p unselectable="on">1</p></div>
+            <div ref={this.place2Ref} className="place num2"><p unselectable="on">2</p></div>
+            <div ref={this.place3Ref} className="place num3"><p unselectable="on">3</p></div>
         </div>
         return <div id="dragArea">
             <div id="up">
@@ -177,30 +175,30 @@ class ColCard extends React.Component{
 
     onDrag = (event) => {
         if (this.state.isDragging === true) {
-            this.setState({
-                initialPos:{
-                    left: event.clientX - 66,
-                    top: event.clientY - 121
-                }
-            })
+            // this.setState({
+            //     initialPos:{
+            //         left: event.clientX - 66,
+            //         top: event.clientY - 121
+            //     }
+            // })
             this.props.updateData(this.state.isDragging)
         }
     }
 
-    onDragStop = (event) => {
-        if (event.type === "mouseup") {
-            if (this.state.isDragging === true) {
-                this.setState({isDragging: false})
-                if (this.state.place === "num1") {
-                    this.setState({initialPos:{left: this.props.placeLoc[0].current.getBoundingClientRect().x, top: 512}})
-                }if (this.state.place === "num2") {
-                    this.setState({initialPos:{left: this.props.placeLoc[1].current.getBoundingClientRect().x, top: 512}})
-                }if (this.state.place === "num3") {
-                    this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: 512}})
-                }
-            }
-        }
-    }
+    // onDragStop = (event) => {
+    //     if (event.type === "mouseup") {
+    //         if (this.state.isDragging === true) {
+    //             this.setState({isDragging: false})
+    //             if (this.state.place === "num1") {
+    //                 this.setState({initialPos:{left: this.props.placeLoc[0].current.getBoundingClientRect().x, top: this.props.placeLoc[0].current.getBoundingClientRect().y}})
+    //             }if (this.state.place === "num2") {
+    //                 this.setState({initialPos:{left: this.props.placeLoc[1].current.getBoundingClientRect().x, top: this.props.placeLoc[1].current.getBoundingClientRect().y}})
+    //             }if (this.state.place === "num3") {
+    //                 this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: this.props.placeLoc[2].current.getBoundingClientRect().y}})
+    //             }
+    //         }
+    //     }
+    // }
 
     CardPlaceSelect = (event) => {
         if (this.state.placeSelector === false) {
@@ -212,15 +210,15 @@ class ColCard extends React.Component{
 
     btnPlaceSelect = (place) => {
         if (place === "1") {
-            this.setState({initialPos:{left: this.props.placeLoc[0].current.getBoundingClientRect().x, top: 512}})
+            this.setState({initialPos:{left: this.props.placeLoc[0].current.getBoundingClientRect().x, top: this.props.placeLoc[0].current.getBoundingClientRect().y}})
             this.setState({place: "num1"})
         }
         if (place === "2") {
-            this.setState({initialPos:{left: this.props.placeLoc[1].current.getBoundingClientRect().x, top: 512}})
+            this.setState({initialPos:{left: this.props.placeLoc[1].current.getBoundingClientRect().x, top: this.props.placeLoc[1].current.getBoundingClientRect().y}})
             this.setState({place: "num2"})
         }
         if (place === "3") {
-            this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: 512}})
+            this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: this.props.placeLoc[2].current.getBoundingClientRect().y}})
             this.setState({place: "num3"})
         }
     }
@@ -238,6 +236,8 @@ class ColCard extends React.Component{
         return <div className={`cardholder cardholder-${this.props.name}`}>
             <div style={this.state.initialPos} className={`card Mg card-${this.props.name}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
                 <h2 unselectable="on">{this.props.name}</h2>
+                <img draggable="false" unselectable="on" src="/img/cardIMG0.png" alt="" />
+                <p unselectable="on">Description</p>
                 {this.state.placeSelector?chooseWindow:null}
             </div>
         </div>
@@ -246,9 +246,17 @@ class ColCard extends React.Component{
 
 class FatCard extends ColCard{
     render(){
+        const chooseWindow = <div className="chooseWindow">
+            <button onClick={()=>this.btnPlaceSelect("1")}>1</button>
+            <button onClick={()=>this.btnPlaceSelect("2")}>2</button>
+            <button onClick={()=>this.btnPlaceSelect("3")}>3</button>
+        </div>
         return <div className={`cardholder cardholder-${this.props.name}`}>
             <div style={this.state.initialPos} className={`card Hm card-${this.props.name}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop}>
                 <h2 unselectable="on">{this.props.name}</h2>
+                <img draggable="false" unselectable="on" src="/img/cardIMG1.png" alt="" />
+                <p unselectable="on">Description</p>
+                {this.state.placeSelector?chooseWindow:null}
             </div>
         </div>
     }

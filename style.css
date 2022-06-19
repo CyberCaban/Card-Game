@@ -21,28 +21,41 @@ body{
     height: 242px;
     background-color: #1D7373	;
     position: absolute;
-    border: 2px solid rgb(226, 0, 0);
+    border: 2px inset rgb(104, 104, 104);
     background-size: cover;
     border-radius: 10px;
-    color: rgb(0, 255, 0);
+    color: rgb(0, 0, 0);
     text-align: center;
 }
 
+.card img{
+    width: 112px;
+    height: 80px;
+    border-radius: 10px;
+    border: 1px gray inset;
+}
+
+.card h2,
+.card p,
+.info,
+.place p{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.card h2{
+    margin: 5px;
+}
+
 .Mg{
-    background-image: url(/img/00.png);
+    background-image: url(/img/paper.jpg);
     opacity: 90%;
 }
 
 .Hm{
-    background-image: url(/img/01.png);
+    background-image: url(/img/paper.jpg);
     opacity: 90%;
-}
-
-.card h2,
-.info{
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 }
 
 .cards{
@@ -130,7 +143,7 @@ body{
 }
 
 .chooseWindow{
-    margin-top: 200px;
+    margin-top: 93px;
 }
 
 .chooseWindow button{
