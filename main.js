@@ -1,5 +1,5 @@
 // const card = document.querySelector(".card")
-const cards = document.querySelector(".cards")
+const cards = document.querySelector("#cards")
 const createCardBox = document.querySelector(".createCardBox")
 const cardTypeOp = document.querySelector("#createcardType")
 const createCardBtn = document.querySelector(".createCardBtn")

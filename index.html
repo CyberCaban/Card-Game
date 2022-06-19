@@ -5,32 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style.css">
-    <script defer src="/main.js"></script>
-    <title>Document</title>
+    <!-- <script defer src="/main.js"></script> -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" defer src="/reactJS.js"></script>
+    <title>CardGame</title>
 </head>
 <body>
-    <div class="dragArea">
-        <div class="up">
-            <div class="item_1">1</div>
-            <div class="info"></div>
-            <div class="item_2">2</div>
-        </div>
-        <!-- <div class="card"></div> -->
-        <div class="down">
-            <!-- <div class="item_3">3</div> -->
-            <div class="cards">
-                <div class="createCardBox">
-                    <button class="createCardBtn">Create Card</button>
-                    <input class="cardNameInput" type="text">
-                    <select name="cardType" id="createcardType"></select>
-                    <div class="deleteCard">
-                        <button class="deleteCardBtn">Delete Card</button>
-                        <select name="deleteCardType" id="deleteCardType"></select>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="item_4">4</div> -->
-        </div>
-    </div>
+    <div id="root"></div>
 </body>
 </html>

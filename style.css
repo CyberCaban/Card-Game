@@ -2,34 +2,52 @@ body{
     margin: 0;
 }
 
-.dragArea{
+#root{
     height: 100vh;
+    position: relative;
+    display: flex;
+}
+
+#dragArea{
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
 }
 
 .card{
-    width: 110px;
-    height: 200px;
+    width: 133px;
+    height: 242px;
     background-color: #1D7373	;
     position: absolute;
-    border: 2px solid gold;
+    border: 2px solid rgb(226, 0, 0);
     background-size: cover;
     border-radius: 10px;
-    color: aliceblue;
+    color: rgb(0, 255, 0);
     text-align: center;
+}
+
+.Mg{
+    background-image: url(/img/00.png);
+    opacity: 90%;
+}
+
+.Hm{
+    background-image: url(/img/01.png);
+    opacity: 90%;
+}
+
+.card h2,
+.info{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .cards{
     display: flex;
     flex-direction: row;
-}
-
-.cardholder{
-    width: 110px;
-    height: 150px;
-    margin: 20px;
 }
 
 .createCardBox{
@@ -43,10 +61,23 @@ body{
     padding: 3px;
 }
 
+.createCardBtn{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
 .deleteCard{
     display: flex;
     flex-direction: column;
     margin-top: auto;
+}
+
+.cardContainer{
+    width: 1px;
+    height: 1px;
+    display: flex;
+    flex-direction: row;
 }
 
 .item_1,
@@ -63,16 +94,49 @@ body{
     margin: 0 0 0 auto;
 }
 
-.up,
-.down{
+#up,
+#down{
     display: flex;
     flex-direction: row;
 }
 
-.up{
+#up{
     margin: 0 0 auto 0;
 }
 
-.down{
+#down{
+    flex-direction: column;
     margin: auto 0 0 0;
+}
+
+#CardPlaces{
+    width: 66.67%;
+    height: 250px;
+    margin: auto;
+    border: 1px black solid;
+    display: flex;
+    flex-direction: row;
+}
+
+.place{
+    width: 133px;
+    height: 242px;
+    border: 1px black solid;
+    margin: auto;
+}
+
+.place p{
+    margin-top: -20px;
+}
+
+.chooseWindow{
+    margin-top: 200px;
+}
+
+.chooseWindow button{
+    margin-left: 7px;
+    margin-right: 7px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
