@@ -1,35 +1,41 @@
 class CollisionElements extends React.Component{
     constructor(props){
         super(props)
+        this.place1Ref = React.createRef()
+        this.place2Ref = React.createRef()
+        this.place3Ref = React.createRef()
         this.state = {
-            isDraggingCard:false
+            isDraggingCard:false,
         }
     }
 
-    collision(e){
-        console.log(e.target.parentElement.parentElement.children[1].children[0].children[0].children); //массив кардхолдеров
-        // console.log(e.target.parentElement.parentElement.children[1].children[0].children[0].children[0].children[0].getBoundingClientRect()); //обращение к конкретной карточке
-                    // e.target.parentElement.parentElement.children[1].children[0].children[0].children.map(cardholder=>{
-                    //     console.log(cardholder);
-                    // })
-        for (let i = 0; i < e.target.parentElement.parentElement.children[1].children[0].children[0].children.length; i++) {
-            console.log(e.target.parentElement.parentElement.children[1].children[0].children[0].children[i]);
-        }
-        // if (isDraggingCard === true) {
+    // collision(e){
+    //     console.log(e.target.parentElement.parentElement.children[1].children[0].children[0].children); //массив кардхолдеров
+    //     // console.log(e.target.parentElement.parentElement.children[1].children[0].children[0].children[0].children[0].getBoundingClientRect()); //обращение к конкретной карточке
+    //                 // e.target.parentElement.parentElement.children[1].children[0].children[0].children.map(cardholder=>{
+    //                 //     console.log(cardholder);
+    //                 // })
+    //     for (let i = 0; i < e.target.parentElement.parentElement.children[1].children[0].children[0].children.length; i++) {
+    //         console.log(e.target.parentElement.parentElement.children[1].children[0].children[0].children[i]);
+    //     }
+    //     // if (isDraggingCard === true) {
             
-        // }
-        // React.Children.map(children=>{console.log(children);})
-    }
+    //     // }
+    //     // React.Children.map(children=>{console.log(children);})
+    // }
     
     updateData = (value) => {
         this.setState({isDraggingCard: value})
     }
 
-    check = (e) => {
-        console.log(e.target.getBoundingClientRect());
-    }
-
     render(){
+        const Places = <div id="CardPlaces">
+            <div ref={this.place1Ref}
+            // onClick={(e)=>this.placeLocUpd(e)} 
+            className="place num1"><p>1</p></div>
+            <div ref={this.place2Ref} className="place num2"><p>2</p></div>
+            <div ref={this.place3Ref} className="place num3"><p>3</p></div>
+        </div>
         return <div id="dragArea">
             <div id="up">
                 <div className="item_1">1</div>
@@ -42,12 +48,8 @@ class CollisionElements extends React.Component{
                 <div className="item_2" onClick={(e)=>this.collision(e)}>2</div>
             </div>
             <div id="down">
-                <div id="CardPlaces">
-                    <div onClick={(e)=>this.check(e)} className="place num1"><p>1</p></div>
-                    <div onClick={(e)=>this.check(e)} className="place num2"><p>2</p></div>
-                    <div onClick={(e)=>this.check(e)} className="place num3"><p>3</p></div>
-                </div>
-                <CreateCardBtn updateData={this.updateData}/>
+                {Places}
+                <CreateCardBtn updateData={this.updateData} placeLoc={[this.place1Ref,this.place2Ref,this.place3Ref]}/>
             </div>
         </div>
     }
@@ -129,7 +131,7 @@ class CreateCardBtn extends React.Component{
         })
         const creation = this.state.archive.map(card=>{
             if (card.cardType === "Magician") {
-                return <ColCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData}/>
+                return <ColCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc}/>
             }
             if (card.cardType === "Hermit") {
                 return <FatCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData}/>
@@ -163,14 +165,13 @@ class ColCard extends React.Component{
             isDragging: false,
             initialPos: {left: 0, top: 0},
             placeSelector: false,
-            place: ''
+            place: '',
         }
     }
 
     onDragStart = (event) => {
         if (event.type === "mousedown") {
             this.setState({isDragging: true})
-            console.log(event.target);
         }
     }
 
@@ -191,11 +192,11 @@ class ColCard extends React.Component{
             if (this.state.isDragging === true) {
                 this.setState({isDragging: false})
                 if (this.state.place === "num1") {
-                    this.setState({initialPos:{left: 304, top: 512}})
+                    this.setState({initialPos:{left: this.props.placeLoc[0].current.getBoundingClientRect().x, top: 512}})
                 }if (this.state.place === "num2") {
-                    this.setState({initialPos:{left: 601, top: 512}})
+                    this.setState({initialPos:{left: this.props.placeLoc[1].current.getBoundingClientRect().x, top: 512}})
                 }if (this.state.place === "num3") {
-                    this.setState({initialPos:{left: 900, top: 512}})
+                    this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: 512}})
                 }
             }
         }
@@ -211,15 +212,15 @@ class ColCard extends React.Component{
 
     btnPlaceSelect = (place) => {
         if (place === "1") {
-            this.setState({initialPos:{left: 304, top: 512}})
+            this.setState({initialPos:{left: this.props.placeLoc[0].current.getBoundingClientRect().x, top: 512}})
             this.setState({place: "num1"})
         }
         if (place === "2") {
-            this.setState({initialPos:{left: 601, top: 512}})
+            this.setState({initialPos:{left: this.props.placeLoc[1].current.getBoundingClientRect().x, top: 512}})
             this.setState({place: "num2"})
         }
         if (place === "3") {
-            this.setState({initialPos:{left: 601, top: 512}})
+            this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: 512}})
             this.setState({place: "num3"})
         }
     }
