@@ -6,6 +6,10 @@ class CollisionElements extends React.Component{
         this.place3Ref = React.createRef()
         this.state = {
             isDraggingCard:false,
+            place1occ:'',
+            place2occ:'',
+            place3occ:'',
+            hand:'',
         }
     }
 
@@ -24,8 +28,20 @@ class CollisionElements extends React.Component{
     //     // React.Children.map(children=>{console.log(children);})
     // }
     
-    updateData = (value) => {
+    updateData = (value, occupancy, cardName) => {
         this.setState({isDraggingCard: value})
+        if (occupancy === "num1") {
+            this.setState({place1occ:cardName})
+        }if (occupancy === "num2") {
+            this.setState({place2occ:cardName})
+        }if (occupancy === "num3") {
+            this.setState({place3occ:cardName})
+        }if (occupancy === "hand") {
+            this.setState({place3occ:cardName})
+        }
+        console.log(this.state.place1occ);
+        console.log(this.state.place2occ);
+        console.log(this.state.place3occ);
     }
 
     render(){
@@ -47,7 +63,7 @@ class CollisionElements extends React.Component{
             </div>
             <div id="down">
                 {Places}
-                <CreateCardBtn updateData={this.updateData} placeLoc={[this.place1Ref,this.place2Ref,this.place3Ref]}/>
+                <CreateCardBtn updateData={this.updateData} placeLoc={[this.place1Ref,this.place2Ref,this.place3Ref]} placeOccup={[this.state.place1occ,this.state.place2occ,this.state.place3occ]}/>
             </div>
         </div>
     }
@@ -63,6 +79,7 @@ class CreateCardBtn extends React.Component{
                     cardTitle:"Example"
                 },
             ],
+            count:1,
             cardTypes:["Magician", "Hermit"],
             value: "",
             typeValue: "Magician",
@@ -129,10 +146,12 @@ class CreateCardBtn extends React.Component{
         })
         const creation = this.state.archive.map(card=>{
             if (card.cardType === "Magician") {
-                return <ColCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc}/>
+                this.state.count += 1
+                return <ColCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc} placeOccup={this.props.placeOccup} cardsInHand={this.state.count}/>
             }
             if (card.cardType === "Hermit") {
-                return <FatCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc}/>
+                this.state.count += 1
+                return <FatCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc} placeOccup={this.props.placeOccup} cardsInHand={this.state.count}/>
             }
         })
         const titleInput = this.state.value
@@ -161,7 +180,7 @@ class ColCard extends React.Component{
         this.y
         this.state = {
             isDragging: false,
-            initialPos: {left: window.innerWidth / 2, top: window.innerHeight - 250},
+            initialPos: {left: (window.innerWidth / 2)+(this.props.cardsInHand*10), top: window.innerHeight - 250},
             placeSelector: false,
             place: '',
         }
@@ -188,7 +207,7 @@ class ColCard extends React.Component{
             }if (this.state.place === "num3") {
                 this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: this.props.placeLoc[2].current.getBoundingClientRect().y}})
             }
-            this.props.updateData(this.state.isDragging)
+            this.props.updateData(this.state.isDragging, this.state.place, this.props.name)
         }
     }
 
@@ -217,16 +236,38 @@ class ColCard extends React.Component{
 
     btnPlaceSelect = (place) => {
         if (place === "1") {
+            if (this.props.placeOccup[0] === this.props.name) {
+                return
+            }if (this.props.placeOccup[0] != '') {
+                return alert("Place is occupied")
+            }
             this.setState({initialPos:{left: this.props.placeLoc[0].current.getBoundingClientRect().x, top: this.props.placeLoc[0].current.getBoundingClientRect().y}})
+            this.props.updateData(null, this.state.place, '')
             this.setState({place: "num1"})
         }
         if (place === "2") {
+            if (this.props.placeOccup[1] === this.props.name) {
+                return
+            }if (this.props.placeOccup[1] != '') {
+                return alert("Place is occupied")
+            }
             this.setState({initialPos:{left: this.props.placeLoc[1].current.getBoundingClientRect().x, top: this.props.placeLoc[1].current.getBoundingClientRect().y}})
+            this.props.updateData(null, this.state.place, '')
             this.setState({place: "num2"})
         }
         if (place === "3") {
+            if (this.props.placeOccup[2] === this.props.name) {
+                return
+            }if (this.props.placeOccup[2] != '') {
+                return alert("Place is occupied")
+            }
             this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: this.props.placeLoc[2].current.getBoundingClientRect().y}})
+            this.props.updateData(null, this.state.place, '')
             this.setState({place: "num3"})
+        } if (place === "Hand") {
+            this.setState({initialPos:{left: window.innerWidth/2, top: window.innerHeight}})
+            this.props.updateData(null, this.state.place, '')
+            this.setState({place: "Hand"})
         }
     }
 
@@ -239,6 +280,7 @@ class ColCard extends React.Component{
             <button onClick={()=>this.btnPlaceSelect("1")}>1</button>
             <button onClick={()=>this.btnPlaceSelect("2")}>2</button>
             <button onClick={()=>this.btnPlaceSelect("3")}>3</button>
+            <button onClick={()=>this.btnPlaceSelect("Hand")}>Hand</button>
         </div>
         return <div className={`cardholder cardholder-${this.props.name}`}>
             <div style={this.state.initialPos} className={`card Mg card-${this.props.name} ${this.state.place} ${this.state.placeSelector?"active":""}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
