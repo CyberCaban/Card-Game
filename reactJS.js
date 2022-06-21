@@ -241,7 +241,7 @@ class ColCard extends React.Component{
             <button onClick={()=>this.btnPlaceSelect("3")}>3</button>
         </div>
         return <div className={`cardholder cardholder-${this.props.name}`}>
-            <div style={this.state.initialPos} className={`card Mg card-${this.props.name} ${this.state.placeSelector?"active":null}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
+            <div style={this.state.initialPos} className={`card Mg card-${this.props.name} ${this.state.place} ${this.state.placeSelector?"active":""}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
                 <h2 unselectable="on">{this.props.name}</h2>
                 <img draggable="false" unselectable="on" src="/img/cardIMG0.png" alt="" />
                 <p unselectable="on">Description</p>
@@ -259,7 +259,7 @@ class FatCard extends ColCard{
             <button onClick={()=>this.btnPlaceSelect("3")}>3</button>
         </div>
         return <div className={`cardholder cardholder-${this.props.name}`}>
-            <div style={this.state.initialPos} className={`card Hm card-${this.props.name} ${this.state.placeSelector?"active":null}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
+            <div style={this.state.initialPos} className={`card Hm card-${this.props.name} ${this.state.placeSelector?"active":''}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
                 <h2 unselectable="on">{this.props.name}</h2>
                 <img draggable="false" unselectable="on" src="/img/cardIMG1.png" alt="" />
                 <p unselectable="on" draggable="false">Description</p>
