@@ -26,6 +26,12 @@ body{
     border-radius: 10px;
     color: rgb(0, 0, 0);
     text-align: center;
+    transition: .5s;
+}
+
+.active{
+    transition: .1s;
+    transform: scale(1.02);
 }
 
 .card img{
@@ -50,12 +56,10 @@ body{
 
 .Mg{
     background-image: url(/img/paper.jpg);
-    opacity: 90%;
 }
 
 .Hm{
     background-image: url(/img/paper.jpg);
-    opacity: 90%;
 }
 
 .cards{
@@ -126,7 +130,6 @@ body{
     width: 66.67%;
     height: 250px;
     margin: auto;
-    border: 1px black solid;
     display: flex;
     flex-direction: row;
 }
@@ -134,16 +137,16 @@ body{
 .place{
     width: 133px;
     height: 242px;
-    border: 1px black solid;
     margin: auto;
 }
 
 .place p{
-    margin-top: -20px;
+    margin-top: 250px;
+    text-align: center;
 }
 
 .chooseWindow{
-    margin-top: 93px;
+    margin-top: -200px;
 }
 
 .chooseWindow button{

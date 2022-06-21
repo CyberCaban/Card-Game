@@ -132,7 +132,7 @@ class CreateCardBtn extends React.Component{
                 return <ColCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc}/>
             }
             if (card.cardType === "Hermit") {
-                return <FatCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData}/>
+                return <FatCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc}/>
             }
         })
         const titleInput = this.state.value
@@ -161,7 +161,7 @@ class ColCard extends React.Component{
         this.y
         this.state = {
             isDragging: false,
-            initialPos: {left: 0, top: 0},
+            initialPos: {left: window.innerWidth / 2, top: window.innerHeight - 250},
             placeSelector: false,
             place: '',
         }
@@ -181,6 +181,13 @@ class ColCard extends React.Component{
             //         top: event.clientY - 121
             //     }
             // })
+            if (this.state.place === "num1") {
+                this.setState({initialPos:{left: this.props.placeLoc[0].current.getBoundingClientRect().x, top: this.props.placeLoc[0].current.getBoundingClientRect().y}})
+            }if (this.state.place === "num2") {
+                this.setState({initialPos:{left: this.props.placeLoc[1].current.getBoundingClientRect().x, top: this.props.placeLoc[1].current.getBoundingClientRect().y}})
+            }if (this.state.place === "num3") {
+                this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: this.props.placeLoc[2].current.getBoundingClientRect().y}})
+            }
             this.props.updateData(this.state.isDragging)
         }
     }
@@ -234,7 +241,7 @@ class ColCard extends React.Component{
             <button onClick={()=>this.btnPlaceSelect("3")}>3</button>
         </div>
         return <div className={`cardholder cardholder-${this.props.name}`}>
-            <div style={this.state.initialPos} className={`card Mg card-${this.props.name}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
+            <div style={this.state.initialPos} className={`card Mg card-${this.props.name} ${this.state.placeSelector?"active":null}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
                 <h2 unselectable="on">{this.props.name}</h2>
                 <img draggable="false" unselectable="on" src="/img/cardIMG0.png" alt="" />
                 <p unselectable="on">Description</p>
@@ -252,10 +259,10 @@ class FatCard extends ColCard{
             <button onClick={()=>this.btnPlaceSelect("3")}>3</button>
         </div>
         return <div className={`cardholder cardholder-${this.props.name}`}>
-            <div style={this.state.initialPos} className={`card Hm card-${this.props.name}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop}>
+            <div style={this.state.initialPos} className={`card Hm card-${this.props.name} ${this.state.placeSelector?"active":null}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
                 <h2 unselectable="on">{this.props.name}</h2>
                 <img draggable="false" unselectable="on" src="/img/cardIMG1.png" alt="" />
-                <p unselectable="on">Description</p>
+                <p unselectable="on" draggable="false">Description</p>
                 {this.state.placeSelector?chooseWindow:null}
             </div>
         </div>
