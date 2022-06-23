@@ -10,6 +10,7 @@ class CollisionElements extends React.Component{
             place2occ:'',
             place3occ:'',
             hand:'',
+            opponent:false
         }
     }
 
@@ -37,11 +38,16 @@ class CollisionElements extends React.Component{
         }if (occupancy === "num3") {
             this.setState({place3occ:cardName})
         }if (occupancy === "hand") {
-            this.setState({place3occ:cardName})
+            this.setState({hand:cardName})
         }
         console.log(this.state.place1occ);
         console.log(this.state.place2occ);
         console.log(this.state.place3occ);
+    }
+
+    opponent = () => {
+        {!this.state.opponent?this.setState({opponent:true}):this.setState({opponent:false})}
+        console.log(this.state.opponent);
     }
 
     render(){
@@ -59,7 +65,7 @@ class CollisionElements extends React.Component{
                         <li>You cant create cards with the same names</li>
                     </ul>
                 </div>
-                <div className="item_2" onClick={(e)=>this.collision(e)}>2</div>
+                <div className="item_2" onClick={this.opponent}>2</div>
             </div>
             <div id="down">
                 {Places}
@@ -76,32 +82,41 @@ class CreateCardBtn extends React.Component{
             archive:[
                 {
                     cardType:"Magician",
-                    cardTitle:"Example"
+                    cardTitle:"Example",
+                    atk:1,
+                    def:1,
                 },
             ],
-            count:1,
             cardTypes:["Magician", "Hermit"],
             value: "",
             typeValue: "Magician",
-            deleteValue:''
+            deleteValue:'',
+            atkValue:1,
+            defValue:1,
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleDeleteChange = this.handleDeleteChange.bind(this);
         this.typeChange = this.typeChange.bind(this);
         this.addToArchive = this.addToArchive.bind(this);
         this.deleteFromArchive = this.deleteFromArchive.bind(this);
+        this.handleAtkChange = this.handleAtkChange.bind(this);
+        this.handleDefChange = this.handleDefChange.bind(this);
     }
 
-    addToArchive(type, title){
+    addToArchive(type, title, atk, def){
         if (this.state.value != "" && !this.state.value.includes(" ")) {
+            if (this.state.archive.find(card => card.cardTitle) === undefined) {
+                return alert('Check the rules!')
+            }
             this.setState({value:" "})
             const arr = this.state.archive
             arr.push({
                 cardType: type,
-                cardTitle: title
+                cardTitle: title,
+                atk: atk,
+                def:def
             })
             this.setState({archive: arr})
-            this.createCard
         }else{
             return alert('Check the rules!')
         }
@@ -127,14 +142,22 @@ class CreateCardBtn extends React.Component{
         })
     }
 
+    handleAtkChange(event){
+        this.setState({
+            atkValue: event.target.value*100
+        })
+    }
+
+    handleDefChange(event){
+        this.setState({
+            defValue: event.target.value*100
+        })
+    }
+
     typeChange(event){
         this.setState({
             typeValue: event.target.value
         })
-    }
-
-    sayHello(){
-        console.log('hello');
     }
 
     render(){
@@ -144,25 +167,31 @@ class CreateCardBtn extends React.Component{
         const existingCards = this.state.archive.map((title)=>{
             return <option value={title.cardTitle} key={title.cardTitle}>{title.cardTitle}</option>
         })
-        const creation = this.state.archive.map(card=>{
+        const creation = this.state.archive.map((card, index)=>{
             if (card.cardType === "Magician") {
-                this.state.count += 1
-                return <ColCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc} placeOccup={this.props.placeOccup} cardsInHand={this.state.count}/>
+                return <ColCard name={card.cardTitle} atk={card.atk} def={card.def} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc} placeOccup={this.props.placeOccup} cardsInHand={index*20}/>
             }
             if (card.cardType === "Hermit") {
-                this.state.count += 1
-                return <FatCard name={card.cardTitle} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc} placeOccup={this.props.placeOccup} cardsInHand={this.state.count}/>
+                return <FatCard name={card.cardTitle} atk={card.atk} def={card.def} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc} placeOccup={this.props.placeOccup} cardsInHand={index*20}/>
             }
         })
         const titleInput = this.state.value
         const typeInput = this.state.typeValue
+        const atkInput = this.state.atkValue
+        const defInput = this.state.defValue
         return <div id="cards">
             <div className="cardContainer">
                 {creation}
             </div>
             <div className="createCardBox">
-                <button onClick={()=>this.addToArchive(typeInput, titleInput)} className="createCardBtn">Create Card</button>
+                <button onClick={()=>this.addToArchive(typeInput, titleInput, atkInput)} className="createCardBtn">Create Card</button>
+                Name the card
                 <input onChange={this.handleChange} className="props.nameInput" type="text" placeholder={this.state.value} autoFocus></input>
+                ATKPower
+                <input onChange={this.handleAtkChange} type="number"></input>
+                DEFPower
+                <input onChange={this.handleDefChange} type="number"></input>
+                Card Type
                 <select onChange={this.typeChange} name="cardType" id="createcardType">{typeMap}</select>
                 <div className="deleteCard">
                     <button onClick={this.deleteFromArchive} className="deleteCardBtn">Delete Card</button>
@@ -180,9 +209,10 @@ class ColCard extends React.Component{
         this.y
         this.state = {
             isDragging: false,
-            initialPos: {left: (window.innerWidth / 2)+(this.props.cardsInHand*10), top: window.innerHeight - 250},
+            initialPos: {left: (window.innerWidth / 2)+(this.props.cardsInHand), top: window.innerHeight - 250},
             placeSelector: false,
             place: '',
+            canAtk: false,
         }
     }
 
@@ -243,7 +273,7 @@ class ColCard extends React.Component{
             }
             this.setState({initialPos:{left: this.props.placeLoc[0].current.getBoundingClientRect().x, top: this.props.placeLoc[0].current.getBoundingClientRect().y}})
             this.props.updateData(null, this.state.place, '')
-            this.setState({place: "num1"})
+            this.setState({place: "num1", canAtk:true})
         }
         if (place === "2") {
             if (this.props.placeOccup[1] === this.props.name) {
@@ -253,7 +283,7 @@ class ColCard extends React.Component{
             }
             this.setState({initialPos:{left: this.props.placeLoc[1].current.getBoundingClientRect().x, top: this.props.placeLoc[1].current.getBoundingClientRect().y}})
             this.props.updateData(null, this.state.place, '')
-            this.setState({place: "num2"})
+            this.setState({place: "num2", canAtk:true})
         }
         if (place === "3") {
             if (this.props.placeOccup[2] === this.props.name) {
@@ -263,16 +293,12 @@ class ColCard extends React.Component{
             }
             this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: this.props.placeLoc[2].current.getBoundingClientRect().y}})
             this.props.updateData(null, this.state.place, '')
-            this.setState({place: "num3"})
+            this.setState({place: "num3", canAtk:true})
         } if (place === "Hand") {
-            this.setState({initialPos:{left: window.innerWidth/2, top: window.innerHeight}})
+            this.setState({initialPos:{left: (window.innerWidth / 2)+(this.props.cardsInHand), top: window.innerHeight - 250}})
             this.props.updateData(null, this.state.place, '')
-            this.setState({place: "Hand"})
+            this.setState({place: "Hand", canAtk:false})
         }
-    }
-
-    sayHello = () => {
-        console.log('hello');
     }
 
     render(){
@@ -280,6 +306,7 @@ class ColCard extends React.Component{
             <button onClick={()=>this.btnPlaceSelect("1")}>1</button>
             <button onClick={()=>this.btnPlaceSelect("2")}>2</button>
             <button onClick={()=>this.btnPlaceSelect("3")}>3</button>
+            {this.state.canAtk?<button onClick={()=>this.btnPlaceSelect("Attack")}>Attack</button>:null}
             <button onClick={()=>this.btnPlaceSelect("Hand")}>Hand</button>
         </div>
         return <div className={`cardholder cardholder-${this.props.name}`}>
@@ -287,6 +314,10 @@ class ColCard extends React.Component{
                 <h2 unselectable="on">{this.props.name}</h2>
                 <img draggable="false" unselectable="on" src="/img/cardIMG0.png" alt="" />
                 <p unselectable="on">Description</p>
+                <div>
+                    <p className="atkPower">{this.props.atk}</p>
+                    <p className="defPower">{this.props.def}</p>
+                </div>
                 {this.state.placeSelector?chooseWindow:null}
             </div>
         </div>
@@ -299,12 +330,15 @@ class FatCard extends ColCard{
             <button onClick={()=>this.btnPlaceSelect("1")}>1</button>
             <button onClick={()=>this.btnPlaceSelect("2")}>2</button>
             <button onClick={()=>this.btnPlaceSelect("3")}>3</button>
+            <button onClick={()=>this.btnPlaceSelect("Hand")}>Hand</button>
         </div>
         return <div className={`cardholder cardholder-${this.props.name}`}>
-            <div style={this.state.initialPos} className={`card Hm card-${this.props.name} ${this.state.placeSelector?"active":''}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
+            <div style={this.state.initialPos} className={`card Hm card-${this.props.name} ${this.state.place} ${this.state.placeSelector?"active":""}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
                 <h2 unselectable="on">{this.props.name}</h2>
                 <img draggable="false" unselectable="on" src="/img/cardIMG1.png" alt="" />
-                <p unselectable="on" draggable="false">Description</p>
+                <p unselectable="on">Description</p>
+                <p className="aktPower">{this.props.atk}</p>
+                <p className="defPower">{this.props.def}</p>
                 {this.state.placeSelector?chooseWindow:null}
             </div>
         </div>

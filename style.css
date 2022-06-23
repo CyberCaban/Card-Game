@@ -69,7 +69,7 @@ body{
 
 .createCardBox{
     width: 180px;
-    height: 180px;
+    height: 220px;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
@@ -95,6 +95,7 @@ body{
     height: 1px;
     display: flex;
     flex-direction: row;
+    padding: 1px;
 }
 
 .item_1,
@@ -129,7 +130,7 @@ body{
 #CardPlaces{
     width: 66.67%;
     height: 250px;
-    margin: auto;
+    margin: auto auto 50px auto;
     display: flex;
     flex-direction: row;
 }
@@ -146,13 +147,19 @@ body{
 }
 
 .chooseWindow{
-    margin-top: -200px;
+    margin-top: -220px;
 }
 
 .chooseWindow button{
+    margin: 1px;
     margin-left: 7px;
     margin-right: 7px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+}
+
+.atkPower{
+    margin: 67px auto auto auto;
+    text-align: left;
 }
