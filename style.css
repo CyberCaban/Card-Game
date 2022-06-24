@@ -1,5 +1,6 @@
 body{
     margin: 0;
+    font-family: 'Open Sans', sans-serif;
 }
 
 #root{
@@ -27,11 +28,12 @@ body{
     color: rgb(0, 0, 0);
     text-align: center;
     transition: .5s;
+    transform: scale(0.9);
 }
 
 .active{
     transition: .1s;
-    transform: scale(1.02);
+    transform: scale3d(0.92,0.92,0.92)
 }
 
 .card img{
@@ -39,6 +41,26 @@ body{
     height: 80px;
     border-radius: 10px;
     border: 1px gray inset;
+}
+
+.card .cardProperties{
+    display: flex;
+    flex-direction: column;
+    height: 120px;
+}
+
+.cardProperties .powers{
+    display: flex;
+    flex-direction: row;
+    margin-top: auto;
+}
+
+.defPower{
+    margin: auto 10px 10px auto;
+}
+
+.atkPower{
+    margin: auto auto 10px 10px;
 }
 
 .card h2,
@@ -62,9 +84,10 @@ body{
     background-image: url(/img/paper.jpg);
 }
 
-.cards{
+#cards{
     display: flex;
     flex-direction: row;
+    height: 250px;
 }
 
 .createCardBox{
@@ -112,18 +135,15 @@ body{
     margin: 0 0 0 auto;
 }
 
-#up,
-#down{
-    display: flex;
-    flex-direction: row;
-}
-
 #up{
+    display: flex;
+    flex-direction: column;
     margin: 0 0 auto 0;
 }
 
 #down{
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     margin: auto 0 0 0;
 }
 
@@ -147,7 +167,7 @@ body{
 }
 
 .chooseWindow{
-    margin-top: -220px;
+    margin-top: -293px;
 }
 
 .chooseWindow button{
@@ -159,7 +179,40 @@ body{
     -ms-user-select: none;
 }
 
-.atkPower{
-    margin: 67px auto auto auto;
-    text-align: left;
+.attackWindow button{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.CCBText{
+    margin: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.navbar{
+    display: flex;
+    flex-direction: row;
+}
+
+#opponentField{
+    width: 66.67%;
+    height: 250px;
+    margin: auto auto auto auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.filler{
+    width: 180px;
+    height: 220px;
+    margin: 10px;
+    padding: 3px;
 }
