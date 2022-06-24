@@ -39,7 +39,7 @@ body{
 .card img{
     width: 112px;
     height: 80px;
-    border-radius: 10px;
+    border-radius: 10%;
     border: 1px gray inset;
 }
 
@@ -56,11 +56,30 @@ body{
 }
 
 .defPower{
-    margin: auto 10px 10px auto;
+    width: 30px;
+    height: 30px;
+    border: 1px black solid;
+    background-color: black;
+    border-radius: 1    0%;
+    background-image: linear-gradient(to right top, #1b52ec, #0078f4, #008edc, #009cb7, #12a699);
+    margin: auto 4px 10px auto;
 }
 
 .atkPower{
-    margin: auto auto 10px 10px;
+    width: 30px;
+    height: 30px;
+    border: 1px black solid;
+    background-color: black;
+    border-radius: 10%;
+    background-image: linear-gradient(to right top, #f20b1f, #e04900, #cc6500, #b87800, #a68612);
+    margin: auto auto 10px 4px;    
+}
+
+.atkPower p,
+.defPower p{
+    color: white;
+    font-weight: 700;
+    margin: auto 0;
 }
 
 .card h2,
@@ -87,12 +106,12 @@ body{
 #cards{
     display: flex;
     flex-direction: row;
-    height: 250px;
+    height: auto;
 }
 
 .createCardBox{
     width: 180px;
-    height: 220px;
+    height: auto;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
@@ -215,4 +234,13 @@ body{
     height: 220px;
     margin: 10px;
     padding: 3px;
+}
+
+.circle{
+    width: 30px;
+    height: 30px;
+    border: 1px black solid;
+    background-color: black;
+    border-radius: 50%;
+    background-image: linear-gradient(to right top, #1b52ec, #0078f4, #008edc, #009cb7, #12a699);
 }

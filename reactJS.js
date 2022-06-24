@@ -104,7 +104,8 @@ class CreateCardBtn extends React.Component{
     addToArchive(type, title, atk, def){
         if (this.state.value != "" && !this.state.value.includes(" ")) {
             if (this.state.archive.find(card => card.cardTitle) == undefined && !this.state.archive) {
-                return alert('Check the rules!')
+                return
+                alert("Check the rules!")
             }
             this.setState({value:" "})
             const arr = this.state.archive
@@ -116,7 +117,8 @@ class CreateCardBtn extends React.Component{
             })
             this.setState({archive: arr})
         }else{
-            return alert('Check the rules!')
+            return
+            alert("Check the rules!")
         }
     }
 
@@ -183,18 +185,18 @@ class CreateCardBtn extends React.Component{
                 {creation}
             </div>
             <div className="createCardBox">
-                <button onClick={()=>this.addToArchive(typeInput, titleInput, atkInput, defInput)} className="createCardBtn">Create Card</button>
                 <p className="CCBText">Name The Card</p>
                 <input onChange={this.handleChange} className="props.nameInput" type="text" placeholder={this.state.value} autoFocus></input>
                 <p className="CCBText">ATKPower</p>
-                <input onChange={this.handleAtkChange} type="number"></input>
+                <input onChange={this.handleAtkChange} type="number" min="0" max="99" placeholder="1"></input>
                 <p className="CCBText">DEFPower</p>
-                <input onChange={this.handleDefChange} type="number"></input>
+                <input onChange={this.handleDefChange} type="number" min="0" max="99" placeholder="1"></input>
                 <p className="CCBText">Card Type</p>
                 <select onChange={this.typeChange} name="cardType" id="createcardType">{typeMap}</select>
+                <button onClick={()=>this.addToArchive(typeInput, titleInput, atkInput, defInput)} className="createCardBtn">Create Card</button>
                 <div className="deleteCard">
-                    <button onClick={this.deleteFromArchive} className="deleteCardBtn">Delete Card</button>
                     <select onChange={this.handleDeleteChange} name="deleteCardType" id="deleteCardType">{existingCards}</select>
+                    <button onClick={this.deleteFromArchive} className="deleteCardBtn">Delete Card</button>
                 </div>
             </div>
         </div>   
@@ -246,7 +248,8 @@ class ColCard extends React.Component{
             if (this.props.placeOccup[0] === this.props.name) {
                 return
             }if (this.props.placeOccup[0] != '') {
-                return alert("Place is occupied")
+                return 
+                alert("Place is occupied")
             }
             this.setState({initialPos:{left: this.props.placeLoc[0].current.getBoundingClientRect().x, top: this.props.placeLoc[0].current.getBoundingClientRect().y}})
             this.props.updateData(this.state.place, '')
@@ -256,7 +259,8 @@ class ColCard extends React.Component{
             if (this.props.placeOccup[1] === this.props.name) {
                 return
             }if (this.props.placeOccup[1] != '') {
-                return alert("Place is occupied")
+                return
+                alert("Place is occupied")
             }
             this.setState({initialPos:{left: this.props.placeLoc[1].current.getBoundingClientRect().x, top: this.props.placeLoc[1].current.getBoundingClientRect().y}})
             this.props.updateData(this.state.place, '')
@@ -266,7 +270,8 @@ class ColCard extends React.Component{
             if (this.props.placeOccup[2] === this.props.name) {
                 return
             }if (this.props.placeOccup[2] != '') {
-                return alert("Place is occupied")
+                return 
+                alert("Place is occupied")
             }
             this.setState({initialPos:{left: this.props.placeLoc[2].current.getBoundingClientRect().x, top: this.props.placeLoc[2].current.getBoundingClientRect().y}})
             this.props.updateData(this.state.place, '')
@@ -303,8 +308,12 @@ class ColCard extends React.Component{
                 <div className="cardProperties">
                     <p unselectable="on">Description</p>
                     <div className="powers">
-                        <p className="atkPower">{this.props.atk}</p>
-                        <p className="defPower">{this.props.def}</p>
+                        <div className="atkPower">
+                            <p>{this.props.atk}</p>
+                        </div>
+                        <div className="defPower">
+                            <p>{this.props.def}</p>
+                        </div>
                     </div>
                 </div>
                 {this.state.placeSelector?chooseWindow:null}
@@ -330,8 +339,12 @@ class FatCard extends ColCard{
                 <div className="cardProperties">
                     <p unselectable="on">Description</p>
                     <div className="powers">
-                        <p className="atkPower">{this.props.atk}</p>
-                        <p className="defPower">{this.props.def}</p>
+                        <div className="atkPower">
+                            <p className="atkPower">{this.props.atk}</p>
+                        </div>
+                        <div className="defPower    ">
+                            <p className="defPower">{this.props.def}</p>
+                        </div>
                     </div>
                 </div>
                 {this.state.placeSelector?chooseWindow:null}
