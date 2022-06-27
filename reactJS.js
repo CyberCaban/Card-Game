@@ -26,10 +26,6 @@ class CollisionElements extends React.Component{
         }if (occupancy === "hand") {
             this.setState({hand:cardName})
         }
-        console.log(this.state.place1occ);
-        console.log(this.state.place2occ);
-        console.log(this.state.place3occ);
-        console.log(" ");
     }
 
     opponent = () => {
@@ -326,11 +322,17 @@ class ColCard extends React.Component{
 class FatCard extends ColCard{
     render(){
         const chooseWindow = <div className="chooseWindow">
-            <button onClick={()=>this.btnPlaceSelect("1")}>1</button>
-            <button onClick={()=>this.btnPlaceSelect("2")}>2</button>
-            <button onClick={()=>this.btnPlaceSelect("3")}>3</button>
+            <button onClick={()=>this.btnPlaceSelect("move1")}>1</button>
+            <button onClick={()=>this.btnPlaceSelect("move2")}>2</button>
+            <button onClick={()=>this.btnPlaceSelect("move3")}>3</button>
             {this.state.canAtk?<button onClick={()=>this.btnPlaceSelect("Attack")}>Attack</button>:null}
             <button onClick={()=>this.btnPlaceSelect("Hand")}>Hand</button>
+        </div>
+        const attackWindow = <div className="attackWindow">
+            <button onClick={()=>this.btnPlaceSelect("atk1")}>Attack 1</button>
+            <button onClick={()=>this.btnPlaceSelect("atk2")}>Attack 2</button>
+            <button onClick={()=>this.btnPlaceSelect("atk3")}>Attack 3</button>
+            <button onClick={()=>this.btnPlaceSelect("Back")}>Back</button>
         </div>
         return <div className={`cardholder cardholder-${this.props.name}`}>
             <div style={this.state.initialPos} className={`card Hm card-${this.props.name} ${this.state.place} ${this.state.placeSelector?"active":""}`} onMouseDown={this.onDragStart} onMouseMove={this.onDrag} onMouseUp={this.onDragStop} onClick={this.CardPlaceSelect}>
@@ -340,14 +342,15 @@ class FatCard extends ColCard{
                     <p unselectable="on">Description</p>
                     <div className="powers">
                         <div className="atkPower">
-                            <p className="atkPower">{this.props.atk}</p>
+                            <p>{this.props.atk}</p>
                         </div>
-                        <div className="defPower    ">
-                            <p className="defPower">{this.props.def}</p>
+                        <div className="defPower">
+                            <p>{this.props.def}</p>
                         </div>
                     </div>
                 </div>
                 {this.state.placeSelector?chooseWindow:null}
+                {this.state.placeAttackSelector?attackWindow:null}
             </div>
         </div>
     }
