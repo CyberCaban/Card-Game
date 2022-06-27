@@ -1,3 +1,3 @@
-# JS-Collision
-Tells when black circle is touching a square
-You can move black circle with your mouse and title will say where it is. If it touching numbered squares it will write nubmer of square circle in
+# Card Game
+Сайт на React, в котором можно создавать свои карточки и ставить их на поле. <br/>
+Вы можете создать карточку со своим названием, параметрами защиты и атаки, а также выбрать тип, который отвечает за скелета на карточке
