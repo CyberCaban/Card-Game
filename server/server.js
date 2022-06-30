@@ -13,19 +13,23 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/index.html'));
 });
 
-io.on('connection', (socket) => {
-  console.log('user connected');
-  socket.on('disconnect', () => {
-    // console.log('user disconnected');
-  });
+// io.on('connection', (socket) => {
+//   console.log('user connected');
+//   socket.on('disconnect', () => {
+//     console.log('user disconnected');
+//   });
+// });
+io.on('connect', function (socket) {
+  console.log('connected');
+  socket.emit('id', socket.id)
 });
 io.on('chat message', (msg) => {
-  console.log(msg);
-  io.emit('chat message', msg);
+  console.log('msg');
+  io.emit('chat message', 'msg');
 });
 
-io.emit('some event', { someProperty: 'some value', otherProperty: 'other value' });
+// io.emit('some event', { someProperty: 'some value', otherProperty: 'other value' });
 
-server.listen(3001, () => {
-  console.log('listening on *:3001');
+server.listen(3000, () => {
+  console.log('listening on *:3000');
 });
