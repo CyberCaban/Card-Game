@@ -1,4 +1,4 @@
-    class CollisionElements extends React.Component{
+class CollisionElements extends React.Component{
     constructor(props){
         super(props)
         this.place1Ref = React.createRef()
@@ -12,10 +12,42 @@
             place2occ:'',
             place3occ:'',
             hand:'',
-            opponent:false
+            opponent:false,
+            value:'',
+            messages:['1','2','3','4'],
+            messagePending:''
+        }
+    }
+
+    emitMSG = (event) => {
+        event.preventDefault();
+        if (this.state.value != '') {
+            // const arr = this.state.messages 
+            io().emit('chat message', this.state.value);
+            // console.log(arr);
+            // io().on('chat message', function(msg) {
+            //     arr.push(`${msg}`)
+            // });
+            // this.setState({messages:arr})
+            // this.state.value = '';
         }
     }
     
+    // messagePend = () => {
+    //         const arr = this.state.messages
+    //         console.log(arr);
+    //         io().on('chat message', function(msg) {
+    //             arr.push(`${msg}`)
+    //         });
+    //         this.setState({messages:arr})
+    //         // this.setState({messagePending:false})
+        
+    // }
+
+    handleChange = (event) => {
+        this.setState({value: event.target.value});
+    }
+
     updateData = (occupancy, cardName) => {
         if (occupancy === "num1") {
             this.setState({place1occ:cardName})
@@ -33,6 +65,12 @@
         console.log(this.state.opponent);
     }
 
+    componentDidUpdate(){
+        if (this.state.messagePending != '') {
+            // console.log(2);
+        }
+    }
+
     render(){
         const Places = <div id="CardPlaces">
             <div ref={this.place1Ref} className="place num1"><p unselectable="on">1</p></div>
@@ -44,14 +82,15 @@
             <div ref={this.opp2Ref} className="place num2"><p unselectable="on">2</p></div>
             <div ref={this.opp1Ref} className="place num1"><p unselectable="on">1</p></div>
         </div>
+        const messages = this.state.messages.map((message, index) => {
+            return <li key={index}>{message}</li>
+        })
+        
         return <div id="dragArea">
             <div id="up">
                 <div className="navbar">
                     <div className="item_1">
-                    <ul id="messages"></ul>
-                    <form id="form" action="">
-                    <input id="input" autocomplete="off" /><button>Send</button>
-                    </form>
+                    
                     </div>
                     <div className="info">
                         <ul><strong>Rules</strong>
@@ -62,7 +101,11 @@
                     <div className="item_2" onClick={this.opponent}>2</div>
                 </div>
                 <div className="wrapper">
-                    <div className="filler"></div>
+                    <div className="filler">
+                        <ul id="messages">{messages}</ul>
+                        <input type="text" value={this.state.value} onChange={this.handleChange}/>
+                        <input id="input" onClick={this.emitMSG}  autoComplete="off" type="submit"/>
+                    </div>
                     {this.state.opponent?opponentField:null}
                 </div>
             </div>
