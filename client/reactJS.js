@@ -1,3 +1,4 @@
+import {io} from "./node_modules/socket.io-client.js"
 class CollisionElements extends React.Component{
     constructor(props){
         super(props)
@@ -17,13 +18,13 @@ class CollisionElements extends React.Component{
             messages:['1','2','3','4'],
             messagePending:''
         }
+        this.socket = io()
     }
 
     emitMSG = (event) => {
         event.preventDefault();
         if (this.state.value != '') {
             // const arr = this.state.messages 
-            io().emit('chat message', this.state.value);
             // console.log(arr);
             // io().on('chat message', function(msg) {
             //     arr.push(`${msg}`)
@@ -41,11 +42,11 @@ class CollisionElements extends React.Component{
     //         });
     //         this.setState({messages:arr})
     //         // this.setState({messagePending:false})
-        
     // }
 
     handleChange = (event) => {
         this.setState({value: event.target.value});
+        
     }
 
     updateData = (occupancy, cardName) => {
@@ -62,12 +63,17 @@ class CollisionElements extends React.Component{
 
     opponent = () => {
         {!this.state.opponent?this.setState({opponent:true}):this.setState({opponent:false})}
-        console.log(this.state.opponent);
+        // console.log(this.state.opponent);
+        // console.log(socket.id);
+        
     }
 
     componentDidUpdate(){
-        if (this.state.messagePending != '') {
-            // console.log(2);
+        if (this.state.opponent != false) {
+            console.log(2);
+            this.socket.on('id', (id) => {
+                console.log(id);
+            })
         }
     }
 
@@ -213,7 +219,6 @@ class CreateCardBtn extends React.Component{
         })
         const creation = this.state.archive.map((card, index)=>{
             if (card.cardType === "Magician") {
-                // return <ResizeHandler name={card.cardTitle} atk={card.atk} def={card.def} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc} placeOccup={this.props.placeOccup} cardsInHand={index*20}/> 
                 return <ColCard name={card.cardTitle} atk={card.atk} def={card.def} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc} placeOccup={this.props.placeOccup} cardsInHand={index*20}/>
             }
             if (card.cardType === "Hermit") {
@@ -403,31 +408,6 @@ class FatCard extends ColCard{
         </div>
     }
 }
-
-
-
-// function debounce(fn, ms) {
-//     let timer
-//     return _ => {
-//         clearTimeout(timer)
-//         timer = setTimeout(_ => {
-//             timer = null
-//             fn.apply(this, arguments)
-//         }, ms)
-//     };
-// }
-// function ResizeHandler(card) {
-//     React.useEffect(() => {
-//         const debouncedHandleResize = debounce(function handleResize() {
-//             console.log(card.name);
-//         }, 100)
-//         window.addEventListener('resize', debouncedHandleResize)
-//         return _ => {
-//             window.removeEventListener('resize', debouncedHandleResize)
-//         }
-//     })
-//     return <ColCard name={card.name} atk={card.atk} def={card.def} key={card.key} updateData={card.updateData} placeLoc={card.placeLoc} placeOccup={card.placeOccup} cardsInHand={card.cardsInHand}/>
-// }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<CollisionElements />);
