@@ -244,3 +244,30 @@ body{
     border-radius: 50%;
     background-image: linear-gradient(to right top, #1b52ec, #0078f4, #008edc, #009cb7, #12a699);
 }
+
+#messages{
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+    height: 220px;
+    max-width: 180px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+#inputBox{
+    width: 181px;
+    height: 21px;
+    display: flex;
+    flex-direction: row;
+}
+
+#inputBox img{
+    margin: auto;
+    width: 15px;
+    height: 15px;
+}
+
+#inputBox input{
+    margin-left: 0;
+}

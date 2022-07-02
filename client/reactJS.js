@@ -1,4 +1,4 @@
-import {io} from "./node_modules/socket.io-client.js"
+// import {io} from "./node_modules/socket.io-client.js"
 class CollisionElements extends React.Component{
     constructor(props){
         super(props)
@@ -15,8 +15,8 @@ class CollisionElements extends React.Component{
             hand:'',
             opponent:false,
             value:'',
-            messages:['1','2','3','4'],
-            messagePending:''
+            messages:['1'],
+            userIsChatting:false
         }
         this.socket = io()
     }
@@ -24,13 +24,8 @@ class CollisionElements extends React.Component{
     emitMSG = (event) => {
         event.preventDefault();
         if (this.state.value != '') {
-            // const arr = this.state.messages 
-            // console.log(arr);
-            // io().on('chat message', function(msg) {
-            //     arr.push(`${msg}`)
-            // });
-            // this.setState({messages:arr})
-            // this.state.value = '';
+            this.socket.emit('chat message', this.state.value);
+            this.setState({value:''})
         }
     }
     
@@ -46,7 +41,6 @@ class CollisionElements extends React.Component{
 
     handleChange = (event) => {
         this.setState({value: event.target.value});
-        
     }
 
     updateData = (occupancy, cardName) => {
@@ -68,13 +62,26 @@ class CollisionElements extends React.Component{
         
     }
 
-    componentDidUpdate(){
-        if (this.state.opponent != false) {
-            console.log(2);
-            this.socket.on('id', (id) => {
-                console.log(id);
+    refreshChat = () => {
+        this.setState({userIsChatting:true})
+    }
+
+    componentDidUpdate = () => {
+        if (this.state.userIsChatting != false) {
+            this.socket.emit('chat refresh')
+            this.socket.on('msg array', (messages) => {
+                this.setState({messages:messages})
             })
+            const messageDiv = document.getElementById('messages')
+            messageDiv.scrollTop = messageDiv.scrollHeight
         }
+    }
+
+    componentDidMount(){
+        this.socket.on('msg array', (messages) => {
+            this.setState({messages:messages})
+        })
+        
     }
 
     render(){
@@ -89,8 +96,9 @@ class CollisionElements extends React.Component{
             <div ref={this.opp1Ref} className="place num1"><p unselectable="on">1</p></div>
         </div>
         const messages = this.state.messages.map((message, index) => {
-            return <li key={index}>{message}</li>
+            return <span key={index}>{message}</span>
         })
+        const userIsChatting = <img draggable="false" unselectable="on" src="/img/галочка.png" alt="" />
         
         return <div id="dragArea">
             <div id="up">
@@ -109,8 +117,11 @@ class CollisionElements extends React.Component{
                 <div className="wrapper">
                     <div className="filler">
                         <ul id="messages">{messages}</ul>
-                        <input type="text" value={this.state.value} onChange={this.handleChange}/>
-                        <input id="input" onClick={this.emitMSG}  autoComplete="off" type="submit"/>
+                        <input id="input" type="text" value={this.state.value} onChange={this.handleChange}/>
+                        <div id="inputBox">
+                            <input id="inputBtn" onClick={this.emitMSG}  autoComplete="off" type="submit"/>
+                            {this.state.userIsChatting?userIsChatting:<button onClick={this.refreshChat}>Click this first!</button>}
+                        </div>
                     </div>
                     {this.state.opponent?opponentField:null}
                 </div>
