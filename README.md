@@ -9,7 +9,10 @@
 После скачивания нужно прописать в Powershell следующее:
 
 ```sh
-$ npm install 
+$ cd client
+$ npm install
+$ cd ../server
+$ npm install
 ```
 
 ### Запуск
