@@ -1,5 +1,5 @@
 // import {io} from "./node_modules/socket.io-client.js"
-class CollisionElements extends React.Component{
+class App extends React.Component{
     constructor(props){
         super(props)
         this.place1Ref = React.createRef()
@@ -15,8 +15,11 @@ class CollisionElements extends React.Component{
             hand:'',
             opponent:false,
             value:'',
+            roomIdValue:'',
             messages:['1'],
-            userIsChatting:false
+            userIsChatting:false,
+            yourID:'',
+            yourRoomId:'',
         }
         this.socket = io()
     }
@@ -28,19 +31,21 @@ class CollisionElements extends React.Component{
             this.setState({value:''})
         }
     }
-    
-    // messagePend = () => {
-    //         const arr = this.state.messages
-    //         console.log(arr);
-    //         io().on('chat message', function(msg) {
-    //             arr.push(`${msg}`)
-    //         });
-    //         this.setState({messages:arr})
-    //         // this.setState({messagePending:false})
-    // }
 
-    handleChange = (event) => {
+    joinRoom = (e) => {
+        e.preventDefault()
+        if (this.state.roomIdValue != '') {
+            this.socket.emit('join room', this.state.roomIdValue)
+            this.setState({roomIdValue:''})
+        }
+    }
+
+    handleChangeMsg = (event) => {
         this.setState({value: event.target.value});
+    }
+
+    handleChangeId = (event) => {
+        this.setState({roomIdValue: event.target.value})
     }
 
     updateData = (occupancy, cardName) => {
@@ -59,7 +64,6 @@ class CollisionElements extends React.Component{
         {!this.state.opponent?this.setState({opponent:true}):this.setState({opponent:false})}
         // console.log(this.state.opponent);
         // console.log(socket.id);
-        
     }
 
     refreshChat = () => {
@@ -69,11 +73,17 @@ class CollisionElements extends React.Component{
     componentDidUpdate = () => {
         if (this.state.userIsChatting != false) {
             this.socket.emit('chat refresh')
+
             this.socket.on('msg array', (messages) => {
                 this.setState({messages:messages})
+                const messageDiv = document.getElementById('messages')
+                messageDiv.scrollTop = messageDiv.scrollHeight
             })
-            const messageDiv = document.getElementById('messages')
-            messageDiv.scrollTop = messageDiv.scrollHeight
+
+            this.socket.on('room id', roomId => {
+                console.log(roomId);
+                this.setState({yourRoomId: roomId})
+            })
         }
     }
 
@@ -81,7 +91,9 @@ class CollisionElements extends React.Component{
         this.socket.on('msg array', (messages) => {
             this.setState({messages:messages})
         })
-        
+        this.socket.on('socket Id', (id) => {
+            this.setState({yourID:id})
+        })
     }
 
     render(){
@@ -103,25 +115,29 @@ class CollisionElements extends React.Component{
         return <div id="dragArea">
             <div id="up">
                 <div className="navbar">
-                    <div className="item_1">
-                    
-                    </div>
                     <div className="info">
-                        <ul><strong>Rules</strong>
+                        <ul><strong onClick={this.opponent}>Rules</strong>
                             <li>You cant use space while naming your card</li>
                             <li>You cant create cards with the same names</li>
                         </ul>
                     </div>
-                    <div className="item_2" onClick={this.opponent}>2</div>
                 </div>
                 <div className="wrapper">
                     <div className="filler">
+                        <span>Your id: <span className="red">{this.state.yourID}</span></span><br/>
+                        <span>You are in room: <span className="blue">{this.state.yourRoomId}</span></span>
+                        <form className="roomID">
+                            <input type="text" value={this.state.roomIdValue} onChange={this.handleChangeId}/>
+                            <input value="Join" type="submit" onClick={this.joinRoom}/>
+                        </form>
                         <ul id="messages">{messages}</ul>
-                        <input id="input" type="text" value={this.state.value} onChange={this.handleChange}/>
-                        <div id="inputBox">
-                            <input id="inputBtn" onClick={this.emitMSG}  autoComplete="off" type="submit"/>
-                            {this.state.userIsChatting?userIsChatting:<button onClick={this.refreshChat}>Click this first!</button>}
-                        </div>
+                        <form>
+                            <input id="input" type="text" value={this.state.value} onChange={this.handleChangeMsg}/>
+                            <div id="inputBox">
+                                <input id="inputBtn" onClick={this.emitMSG}  autoComplete="off" type="submit"/>
+                                {this.state.userIsChatting?userIsChatting:<button onClick={this.refreshChat}>Click this first!</button>}
+                            </div>
+                        </form>
                     </div>
                     {this.state.opponent?opponentField:null}
                 </div>
@@ -153,16 +169,9 @@ class CreateCardBtn extends React.Component{
             atkValue:1,
             defValue:1,
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleDeleteChange = this.handleDeleteChange.bind(this);
-        this.typeChange = this.typeChange.bind(this);
-        this.addToArchive = this.addToArchive.bind(this);
-        this.deleteFromArchive = this.deleteFromArchive.bind(this);
-        this.handleAtkChange = this.handleAtkChange.bind(this);
-        this.handleDefChange = this.handleDefChange.bind(this);
     }
 
-    addToArchive(type, title, atk, def){
+    addToArchive = (type, title, atk, def) => {
         if (this.state.value != "" && !this.state.value.includes(" ")) {
             if (this.state.archive.find(card => card.cardTitle) == undefined && !this.state.archive) {
                 return
@@ -183,7 +192,7 @@ class CreateCardBtn extends React.Component{
         }
     }
 
-    deleteFromArchive(){
+    deleteFromArchive = () => {
         const arr = this.state.archive
         arr.splice(arr.findIndex(card => card.cardTitle === this.state.deleteValue), 1)
         this.setState({
@@ -191,37 +200,42 @@ class CreateCardBtn extends React.Component{
         })
     }
 
-    handleDeleteChange(event){
+    handleDeleteChange = (event) => {
         this.setState({
             deleteValue: event.target.value
         })
     }
 
-    handleChange(event){
+    handleChange = (event) => {
         this.setState({
             value: event.target.value
         })
     }
 
-    handleAtkChange(event){
+    handleAtkChange = (event) => {
         this.setState({
             atkValue: event.target.value
         })
     }
 
-    handleDefChange(event){
+    handleDefChange = (event) => {
         this.setState({
             defValue: event.target.value
         })
     }
 
-    typeChange(event){
+    typeChange = (event) => {
         this.setState({
             typeValue: event.target.value
         })
     }
 
     render(){
+        const titleInput = this.state.value
+        const typeInput = this.state.typeValue
+        const atkInput = this.state.atkValue
+        const defInput = this.state.defValue
+        
         const typeMap = this.state.cardTypes.map((type)=>{
             return <option value={type} key={type}>{type}</option>
         })
@@ -236,10 +250,6 @@ class CreateCardBtn extends React.Component{
                 return <FatCard name={card.cardTitle} atk={card.atk} def={card.def} key={card.cardTitle} updateData={this.props.updateData} placeLoc={this.props.placeLoc} placeOccup={this.props.placeOccup} cardsInHand={index*20}/>
             }
         })
-        const titleInput = this.state.value
-        const typeInput = this.state.typeValue
-        const atkInput = this.state.atkValue
-        const defInput = this.state.defValue
         return <div id="cards">
             <div className="cardContainer">
                 {creation}
@@ -421,4 +431,4 @@ class FatCard extends ColCard{
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<CollisionElements />);
+root.render(<App />);

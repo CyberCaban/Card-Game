@@ -15,11 +15,15 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('user connected');
+  console.log('user connected')
+
+  socket.emit('socket Id', socket.id)
   socket.emit('msg array', messages)
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
+
   socket.on('chat message', (msg) => {
     if (msg != null) {
       messages.push(msg)
@@ -28,14 +32,17 @@ io.on('connection', (socket) => {
       }
       socket.emit('msg array', messages)
     }
-    // console.log(messages);
   });
+
   socket.on('chat refresh', () => {
     socket.emit('msg array', messages)
   })
-});
 
-// io.emit('some event', { someProperty: 'some value', otherProperty: 'other value' });
+  socket.on('join room', roomId => {
+    socket.join(roomId)
+    socket.emit("room id", roomId)
+  })
+});
 
 server.listen(3000, () => {
   console.log('listening on *:3000');
