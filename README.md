@@ -9,18 +9,15 @@
 После скачивания нужно прописать в Powershell следующее:
 
 ```sh
-$ cd client
-$ npm install
-$ cd ../server
 $ npm install
 ```
 
 ### Запуск
 
-Чтобы запустить приложение нужно открыть в Powershell папку Card-Game/server и прописать:
+Чтобы запустить приложение нужно прописать:
 
 ```sh
-$ node server.js 
+$ node ./src/server/server.js
 ```
 
 Локальный сервер с приложением запуститься по адресу
