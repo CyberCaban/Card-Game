@@ -1,4 +1,3 @@
-// import {io} from "./node_modules/socket.io-client.js"
 class App extends React.Component{
     constructor(props){
         super(props)
@@ -62,8 +61,6 @@ class App extends React.Component{
 
     opponent = () => {
         {!this.state.opponent?this.setState({opponent:true}):this.setState({opponent:false})}
-        // console.log(this.state.opponent);
-        // console.log(socket.id);
     }
 
     refreshChat = () => {
@@ -305,12 +302,7 @@ class ColCard extends React.Component{
     }
 
     CardPlaceSelect = (event) => {
-        if (this.state.placeSelector === false) {
-            this.setState({placeSelector: true})
-        }else{
-            this.setState({placeSelector: false})
-        }
-        // this.setState({placeAttackSelector:false})
+        {!this.state.placeSelector?this.setState({placeSelector: true}):this.setState({placeSelector: false})}
     }
 
     btnPlaceSelect = (place) => {

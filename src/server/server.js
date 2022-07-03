@@ -8,10 +8,10 @@ var path = require('path');
 const { log } = require('console');
 let messages = []
 
-app.use(express.static(path.resolve(__dirname, '../client')))
+app.use(express.static(path.resolve(__dirname, '../')))
 
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/index.html'));
+  res.sendFile(path.resolve(__dirname, '../index.html'));
 });
 
 io.on('connection', (socket) => {
@@ -40,6 +40,7 @@ io.on('connection', (socket) => {
 
   socket.on('join room', roomId => {
     socket.join(roomId)
+    console.log(socket.join);
     socket.emit("room id", roomId)
   })
 });
